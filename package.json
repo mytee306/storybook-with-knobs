@@ -2,9 +2,9 @@
   "name": "with-knobs",
   "version": "0.1.1",
   "private": false,
-  "main": "dist/index.js",
+  "main": "dist/withKnobs.js",
   "files": [
-    "dist/index.js"
+    "dist/*"
   ],
   "types": "dist/withKnobs.d.ts",
   "dependencies": {

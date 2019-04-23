@@ -1,3 +1,12 @@
+export interface PersonalInformation {
+  name: string;
+  age: number;
+  birthday: Date;
+  employed: boolean;
+  hobbies: string[];
+  languages: { [language: string]: string };
+}
+
 export const personalInformation = {
   name: 'John',
   age: 25,

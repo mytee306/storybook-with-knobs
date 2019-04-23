@@ -1,6 +1,16 @@
 import React from 'react';
 import App from './App';
 import { storiesOf } from '@storybook/react';
-import { personalInformation } from './mocks/personalInformation';
+import {
+  personalInformation,
+  PersonalInformation,
+} from './mocks/personalInformation';
+import mockObjectToKnobs from './utils/mockObjectToKnobs';
 
-storiesOf('App', module).add('Default', () => <App {...personalInformation} />);
+const personalInformationWithKnobs = mockObjectToKnobs(
+  personalInformation,
+) as PersonalInformation;
+
+storiesOf('App', module).add('Default', () => (
+  <App {...personalInformationWithKnobs} />
+));

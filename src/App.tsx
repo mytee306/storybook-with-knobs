@@ -1,15 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { PersonalInformation } from './mocks/personalInformation';
 
-export interface AppProps {
-  name: string;
-  age: number;
-  birthday: Date;
-  employed: boolean;
-  hobbies: string[];
-  languages: { [language: string]: string };
-}
+export type AppProps = PersonalInformation;
 
 const App: React.FC<AppProps> = ({
   name,

@@ -1,8 +1,8 @@
-import React from 'react';
-import App from './App';
 import { storiesOf } from '@storybook/react';
+import React from 'react';
+import mockObjectToKnobs from '../dist/withKnobs';
+import App from './App';
 import { personalInformation } from './mocks/personalInformation';
-import mockObjectToKnobs from './utils/withKnobs';
 
 storiesOf('App', module).add('Default', () => {
   return <App {...mockObjectToKnobs(personalInformation)} />;

@@ -1,44 +1,51 @@
 import * as knobs from '@storybook/addon-knobs';
 import { startCase } from 'lodash';
-import { fromPairs, pipe, toPairs } from 'ramda';
 
-type Value = string | number | boolean | Array<{}> | Object | Function;
-
-type MockObject = { [key: string]: Value };
-
-type MockPair = [string, Value];
-
+type MockPair = [string, any];
 type MockPairs = MockPair[];
 
-const types = ['number', 'string', 'boolean', 'object', 'function'];
+const supportedTypes = ['number', 'string', 'boolean', 'object'];
 
-const filterMockArray = (mockPair: MockPairs) =>
-  mockPair.filter(([, value]) => types.includes(typeof value));
+const filterMockArray = (mockPairs: MockPairs) =>
+  mockPairs.filter(([, value]) => supportedTypes.includes(typeof value));
 
-const mockPairToKnobs = ([key, value]: MockPair) => {
-  const type = typeof value;
-
+// knobs does not have an index signature
+const mockPairToKnobs = ([key, value]: MockPair): MockPair => {
   const label = startCase(key);
 
-  if (typeof value === 'string' && type.startsWith('#')) {
+  if (typeof value === 'string' && value.startsWith('#')) {
+    // type guards require typeof in condition
     return [key, knobs.color(label, value)];
   } else if (typeof value === 'string') {
     return [key, knobs.text(label, value)];
   } else if (Array.isArray(value)) {
     return [key, knobs.array(label, value)];
-  } else if (type === 'object' && value instanceof Date) {
+  } else if (value instanceof Date) {
     return [key, new Date(knobs.date(label, value))];
+  } else if (typeof value === 'number') {
+    return [key, knobs.number(label, value)];
+  } else if (typeof value === 'boolean') {
+    return [key, knobs.boolean(label, value)];
   } else {
-    return [key, (knobs as any)[type](label, value)];
+    return [key, knobs.object(label, value)];
   }
 };
 
 const mockArrayToKnobs = (mockPairs: MockPairs) =>
   mockPairs.map(mockPairToKnobs);
 
-export default (pipe as any)(
-  toPairs,
-  filterMockArray,
-  mockArrayToKnobs,
-  fromPairs,
+type Pipe = <A, B>(f: (a: A) => B) => <C>(g: (a: B) => C) => (a: A) => C;
+const pipe: Pipe = f => g => a => g(f(a));
+
+const fromEntries = <Value>(entries: [string, Value][]) =>
+  entries.reduce(
+    (object, [key, value]) => ({ ...object, [key]: value }),
+    {} as { [key: string]: Value },
+  );
+
+const mockObjectToKnobs = pipe(Object.entries)(
+  pipe(filterMockArray)(pipe(mockArrayToKnobs)(fromEntries)),
 );
+
+export default <MockObject>(mockObject: MockObject) =>
+  mockObjectToKnobs(mockObject) as MockObject;

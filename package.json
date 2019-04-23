@@ -2,6 +2,10 @@
   "name": "with-knobs",
   "version": "0.1.0",
   "private": true,
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "dependencies": {
     "@types/jest": "24.0.11",
     "@types/node": "11.13.7",
@@ -19,7 +23,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public"
+    "storybook": "start-storybook -p 9009 -s public",
+    "build:script": "tsc src/utils/withKnobs --out index.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -37,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.3.3",
     "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-info": "^5.0.10",
     "@storybook/addon-knobs": "^5.0.10",
@@ -47,6 +53,7 @@
     "@types/storybook__addon-info": "^4.1.1",
     "@types/storybook__addon-knobs": "^5.0.0",
     "@types/storybook__react": "^4.0.1",
+    "@types/webpack": "^4.4.27",
     "@types/webpack-env": "^1.13.9",
     "react-docgen-typescript-loader": "^3.1.0"
   }

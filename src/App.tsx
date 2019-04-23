@@ -11,12 +11,17 @@ const App: React.FC<AppProps> = ({
   employed,
   hobbies,
   languages,
+  favoriteColor,
 }) => {
   return (
     <form className="App">
       <label>
         Name:
         <input type="text" value={name} />
+      </label>
+      <label>
+        Favorite Color:
+        <input type="text" value={favoriteColor} />
       </label>
       <label>
         Age:

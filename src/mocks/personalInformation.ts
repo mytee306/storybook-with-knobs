@@ -5,6 +5,7 @@ export interface PersonalInformation {
   employed: boolean;
   hobbies: string[];
   languages: { [language: string]: string };
+  favoriteColor: string;
 }
 
 export const personalInformation = {

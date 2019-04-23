@@ -1,16 +1,11 @@
 import * as knobs from '@storybook/addon-knobs';
 import { startCase } from 'lodash';
 
-type MockPair = [string, any];
-type MockPairs = MockPair[];
-
-const supportedTypes = ['number', 'string', 'boolean', 'object'];
-
-const filterMockArray = (mockPairs: MockPairs) =>
-  mockPairs.filter(([, value]) => supportedTypes.includes(typeof value));
+type MockEntry = [string, any];
+type MockEntries = MockEntry[];
 
 // knobs does not have an index signature
-const mockPairToKnobs = ([key, value]: MockPair): MockPair => {
+const mockEntryToKnobs = ([key, value]: MockEntry): MockEntry => {
   const label = startCase(key);
 
   if (typeof value === 'string' && value.startsWith('#')) {
@@ -31,8 +26,8 @@ const mockPairToKnobs = ([key, value]: MockPair): MockPair => {
   }
 };
 
-const mockArrayToKnobs = (mockPairs: MockPairs) =>
-  mockPairs.map(mockPairToKnobs);
+const mockEntriesToKnobs = (mockPairs: MockEntries) =>
+  mockPairs.map(mockEntryToKnobs);
 
 type Pipe = <A, B>(f: (a: A) => B) => <C>(g: (a: B) => C) => (a: A) => C;
 const pipe: Pipe = f => g => a => g(f(a));
@@ -43,9 +38,7 @@ const fromEntries = <Value>(entries: [string, Value][]) =>
     {} as { [key: string]: Value },
   );
 
-const mockObjectToKnobs = pipe(Object.entries)(
-  pipe(filterMockArray)(pipe(mockArrayToKnobs)(fromEntries)),
-);
+const withKnobs = pipe(Object.entries)(pipe(mockEntriesToKnobs)(fromEntries));
 
 export default <MockObject>(mockObject: MockObject) =>
-  mockObjectToKnobs(mockObject) as MockObject;
+  withKnobs(mockObject) as MockObject;

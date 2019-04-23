@@ -1,5 +1,5 @@
 {
-  "name": "storybook-with-knobs",
+  "name": "with-knobs",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

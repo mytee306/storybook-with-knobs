@@ -30,7 +30,7 @@ const mockPairToKnobs = ([label, value]: MockPair) => {
   } else if (type === 'object' && value instanceof Date) {
     return knobs['date'](label, value);
   } else {
-    return knobs[type](label, value);
+    return (knobs as any)[type](label, value);
   }
 };
 

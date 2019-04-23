@@ -8,7 +8,7 @@ export interface PersonalInformation {
   favoriteColor: string;
 }
 
-export const personalInformation = {
+export const personalInformation: PersonalInformation = {
   name: 'John',
   age: 25,
   employed: true,

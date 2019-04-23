@@ -7,8 +7,6 @@ import {
 } from './mocks/personalInformation';
 import mockObjectToKnobs from './utils/mockObjectToKnobs';
 
-const personalInformationWithKnobs = mockObjectToKnobs(
-  personalInformation,
-) as PersonalInformation;
-
-storiesOf('App', module).add('Default', () => <App {...personalInformation} />);
+storiesOf('App', module).add('Default', () => {
+  return <App {...mockObjectToKnobs(personalInformation)} />;
+});

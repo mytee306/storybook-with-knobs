@@ -37,7 +37,7 @@ const App: React.FC<AppProps> = ({
       </label>
       <fieldset>
         {Object.entries(languages).map(([language, level]) => (
-          <label>
+          <label key={language}>
             {language}:
             <input value={level} />
           </label>

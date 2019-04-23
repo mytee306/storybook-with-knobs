@@ -36,8 +36,10 @@
     ]
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.0.10",
     "@storybook/addon-info": "^5.0.10",
     "@storybook/addon-knobs": "^5.0.10",
+    "@storybook/addon-links": "^5.0.10",
     "@types/lodash": "^4.14.123",
     "@types/ramda": "^0.26.8",
     "@types/storybook__addon-knobs": "^5.0.0",

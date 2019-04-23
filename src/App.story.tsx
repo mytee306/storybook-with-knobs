@@ -11,6 +11,4 @@ const personalInformationWithKnobs = mockObjectToKnobs(
   personalInformation,
 ) as PersonalInformation;
 
-storiesOf('App', module).add('Default', () => (
-  <App {...personalInformationWithKnobs} />
-));
+storiesOf('App', module).add('Default', () => <App {...personalInformation} />);

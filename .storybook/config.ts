@@ -7,8 +7,8 @@ const requireContext = require.context('../src', true, /\.story\.tsx$/);
 
 function loadStories() {
   addDecorator(withInfo);
-  addDecorator(withKnobs);
   addDecorator(withSmartKnobs);
+  addDecorator(withKnobs);
 
   requireContext.keys().forEach(requireContext);
 }

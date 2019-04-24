@@ -6,7 +6,7 @@ Import `withKnobs` as default from `'with-knobs'` and use it to wrap an arbitrar
 
 ## Example
 
-`.storybook/config.ts`
+### .storybook/config.ts
 
 ```ts
 import { configure, addDecorator } from '@storybook/react';
@@ -23,13 +23,13 @@ function loadStories() {
 configure(loadStories, module);
 ```
 
-`.storybook/addons.ts`
+### .storybook/addons.ts
 
 ```ts
 import '@storybook/addon-knobs/register';
 ```
 
-`src/App.stories.tsx`
+### src/App.stories.tsx
 
 ```tsx
 import { storiesOf } from '@storybook/react';
@@ -43,7 +43,7 @@ storiesOf('App', module).add('Default', () => {
 });
 ```
 
-`src/App.tsx`
+### src/App.tsx
 
 ```tsx
 import React from 'react';
@@ -102,7 +102,7 @@ const App: React.FC<AppProps> = ({
 export default App;
 ```
 
-`src/mocks/personalInformation.ts`
+### src/mocks/personalInformation.ts
 
 ```ts
 export interface PersonalInformation {

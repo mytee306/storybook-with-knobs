@@ -5,6 +5,9 @@ type MockObject = { [key: string]: any };
 type MockEntry = [string, any];
 type MockEntries = MockEntry[];
 
+// for more information check out https://www.debuggex.com/r/vpn4CGZFfeN7WR1_
+const dateRegex = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)(?:0?2|(?:Feb))\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})/;
+
 // knobs does not have an index signature
 const mockEntryToKnobs = ([key, value]: MockEntry): MockEntry => {
   const label = startCase(key);
@@ -12,12 +15,12 @@ const mockEntryToKnobs = ([key, value]: MockEntry): MockEntry => {
   if (typeof value === 'string' && value.startsWith('#')) {
     // type guards require typeof operator in condition
     return [key, knobs.color(label, value)];
+  } else if (value instanceof Date || dateRegex.test(value)) {
+    return [key, new Date(knobs.date(label, value))];
   } else if (typeof value === 'string') {
     return [key, knobs.text(label, value)];
   } else if (Array.isArray(value)) {
     return [key, knobs.array(label, value)];
-  } else if (value instanceof Date) {
-    return [key, new Date(knobs.date(label, value))];
   } else if (typeof value === 'number') {
     return [key, knobs.number(label, value)];
   } else if (typeof value === 'boolean') {

@@ -1,6 +1,7 @@
 import * as knobs from '@storybook/addon-knobs';
 import { startCase } from 'lodash';
 
+type MockObject = { [key: string]: any };
 type MockEntry = [string, any];
 type MockEntries = MockEntry[];
 
@@ -9,7 +10,7 @@ const mockEntryToKnobs = ([key, value]: MockEntry): MockEntry => {
   const label = startCase(key);
 
   if (typeof value === 'string' && value.startsWith('#')) {
-    // type guards require typeof in condition
+    // type guards require typeof operator in condition
     return [key, knobs.color(label, value)];
   } else if (typeof value === 'string') {
     return [key, knobs.text(label, value)];
@@ -26,8 +27,8 @@ const mockEntryToKnobs = ([key, value]: MockEntry): MockEntry => {
   }
 };
 
-const mockEntriesToKnobs = (mockPairs: MockEntries) =>
-  mockPairs.map(mockEntryToKnobs);
+const mockEntriesToKnobs = (mockEntries: MockEntries) =>
+  mockEntries.map(mockEntryToKnobs);
 
 type Pipe = <A, B>(f: (a: A) => B) => <C>(g: (a: B) => C) => (a: A) => C;
 const pipe: Pipe = f => g => a => g(f(a));
@@ -38,7 +39,8 @@ const fromEntries = <Value>(entries: [string, Value][]) =>
     {} as { [key: string]: Value },
   );
 
-const withKnobs = pipe(Object.entries)(pipe(mockEntriesToKnobs)(fromEntries));
+const withKnobs = (mock: MockObject) =>
+  pipe(Object.entries)(pipe(mockEntriesToKnobs)(fromEntries))(mock);
 
-export default <MockObject>(mockObject: MockObject) =>
-  withKnobs(mockObject) as MockObject;
+export default <Mock extends MockObject>(mockObject: Mock) =>
+  withKnobs(mockObject) as Mock;

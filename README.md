@@ -1,44 +1,130 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# With Knobs
 
-## Available Scripts
+## Usage
 
-In the project directory, you can run:
+Import `withKnobs` as default from `'with-knobs'` and use it to wrap an arbitrary object to get out of the box support for [storybook knobs](https://www.npmjs.com/package/@storybook/addon-knobs)
 
-### `npm start`
+## Example
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`.storybook/config.ts`
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+```ts
+import { configure, addDecorator } from '@storybook/react';
+import { withKnobs } from '@storybook/addon-knobs';
 
-### `npm test`
+const requireContext = require.context('../src', true, /\.stories\.tsx$/);
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+function loadStories() {
+  addDecorator(withKnobs);
 
-### `npm run build`
+  requireContext.keys().forEach(requireContext);
+}
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+configure(loadStories, module);
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+`.storybook/addons.ts`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```ts
+import '@storybook/addon-knobs/register';
+```
 
-### `npm run eject`
+`src/App.stories.tsx`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```tsx
+import { storiesOf } from '@storybook/react';
+import React from 'react';
+import withKnobs from '../dist/withKnobs';
+import App from './App';
+import { personalInformation } from './mocks/personalInformation';
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+storiesOf('App', module).add('Default', () => {
+  return <App {...withKnobs(personalInformation)} />;
+});
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`src/App.tsx`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```tsx
+import React from 'react';
+import './App.css';
+import { PersonalInformation } from './mocks/personalInformation';
 
-## Learn More
+export type AppProps = PersonalInformation;
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+const App: React.FC<AppProps> = ({
+  name,
+  age,
+  birthday,
+  employed,
+  hobbies,
+  languages,
+  favoriteColor,
+}) => {
+  return (
+    <form className="App">
+      <label>
+        Name:
+        <input readOnly type="text" value={name} />
+      </label>
+      <label>
+        Favorite Color:
+        <input readOnly type="text" value={favoriteColor} />
+      </label>
+      <label>
+        Age:
+        <input readOnly type="text" value={age} />
+      </label>
+      <label>
+        Employed:
+        <input readOnly type="text" value={JSON.stringify(employed)} />
+      </label>
+      <label>
+        Hobbies:
+        <input readOnly type="text" value={hobbies} />
+      </label>
+      <fieldset>
+        {Object.entries(languages).map(([language, level]) => (
+          <label key={language}>
+            {language}:
+            <input readOnly value={level} />
+          </label>
+        ))}
+      </fieldset>
+      <label>
+        Birthday:
+        <input readOnly type="text" value={birthday.toLocaleDateString()} />
+      </label>
+    </form>
+  );
+};
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+export default App;
+```
+
+`src/mocks/personalInformation.ts`
+
+```ts
+export interface PersonalInformation {
+  name: string;
+  age: number;
+  birthday: Date;
+  employed: boolean;
+  hobbies: string[];
+  languages: { [language: string]: string };
+  favoriteColor: string;
+}
+
+export const personalInformation: PersonalInformation = {
+  name: 'John',
+  age: 25,
+  employed: true,
+  favoriteColor: '#eee',
+  hobbies: ['Running', 'Reading'],
+  languages: {
+    english: 'Mother Language',
+    german: 'Proficient',
+  },
+  birthday: new Date('Jan 1 1994'),
+};
+```

@@ -1,3 +1,5 @@
-declare const _default: <MockObject>(mockObject: MockObject) => MockObject;
+declare type MockObject = {
+    [key: string]: any;
+};
+declare const _default: <Mock extends MockObject>(mockObject: Mock) => Mock;
 export default _default;
-//# sourceMappingURL=withKnobs.d.ts.map

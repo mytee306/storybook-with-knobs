@@ -34,7 +34,7 @@ import '@storybook/addon-knobs/register';
 ```tsx
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import withKnobs from '../dist/withKnobs';
+import withKnobs from 'with-knobs';
 import App from './App';
 import { personalInformation } from './mocks/personalInformation';
 

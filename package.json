@@ -18,6 +18,10 @@
     "storybook": "start-storybook -p 9009 -s public",
     "build:script": "tsc src/utils/withKnobs.ts --outDir dist --declaration"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mytee306/with-knobs.git"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },

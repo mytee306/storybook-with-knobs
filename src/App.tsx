@@ -12,10 +12,15 @@ const App: React.FC<AppProps> = ({
   hobbies,
   languages,
   favoriteColor,
+  greet,
 }) => {
   return (
     <form className="App">
-      <label>
+      <label
+        onClick={() => {
+          console.log(greet(name));
+        }}
+      >
         Name:
         <input readOnly type="text" value={name} />
       </label>

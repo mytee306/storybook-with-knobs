@@ -6,6 +6,7 @@ export interface PersonalInformation {
   hobbies: string[];
   languages: { [language: string]: string };
   favoriteColor: string;
+  greet: (name: string) => string;
 }
 
 export const personalInformation: PersonalInformation = {
@@ -19,4 +20,5 @@ export const personalInformation: PersonalInformation = {
     german: 'Proficient',
   },
   birthday: new Date('Jan 1 1994'),
+  greet: name => `Hello ${name}`,
 };

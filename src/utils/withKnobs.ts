@@ -24,6 +24,8 @@ const mockEntryToKnobs = ([key, value]: MockEntry): MockEntry => {
     return [key, knobs.number(label, value)];
   } else if (typeof value === 'boolean') {
     return [key, knobs.boolean(label, value)];
+  } else if (typeof value === 'function') {
+    return [key, value];
   } else {
     return [key, knobs.object(label, value)];
   }
